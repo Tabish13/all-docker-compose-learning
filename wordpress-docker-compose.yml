@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+    wordpress-coding-yaar-con:
+        image: wordpress:5.4.1-php7.2-apache    
+        restart: always    
+        ports: 
+            - 8080:80
+        environment: 
+            WORDPRESS_DB_HOST: mysqldb
+            WORDPRESS_DB_USER: codingyaar
+            WORDPRESS_DB_PASSWORD: codingyaarpass
+            WORDPRESS_DB_NAME: codingyaar
+        volumes:
+            - ./volumes/wordpress/src:/var/www/html
+            - ./volumes/wordpress/themes:/var/www/html/wp-content/themes/
+            - ./volumes/wordpress/plugins:/var/www/html/wp-content/plugins/            
+            
+        networks:
+            - wordpress-net
+    mysqldb:
+        image: mysql:5.7
+        restart: always
+        environment:            
+            MYSQL_DATABASE: codingyaar
+            MYSQL_USER: codingyaar
+            MYSQL_PASSWORD: codingyaarpass
+            MYSQL_RANDOM_ROOT_PASSWORD: '1'
+        volumes:
+            - ./volumes/mysqltest:/var/lib/mysql
+        networks:
+            - wordpress-net
+networks:
+    wordpress-net:
+        driver: bridge
+
+ 
+
+

@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+    drupal-con:
+        image: drupal:8
+        ports: 
+            - 8080:80
+        volumes:
+            - ./volumes/drupal/modules:/var/www/html/modules
+            - ./volumes/drupal/profiles:/var/www/html/profiles
+            - ./volumes/drupal/themes:/var/www/html/themes
+            # this takes advantage of the feature in Docker that a new anonymous
+            # volume (which is what we're creating here) will be initialized with the
+            # existing content of the image at the same location
+            
+        networks:
+            - drupal-net
+    postgres-con:
+        image: postgres:9.6
+        environment:
+            POSTGRES_PASSWORD: tabish
+        volumes:
+            - ./volumes/postgres/data:/var/lib/postgresql/data
+        networks:
+            - drupal-net
+networks:
+    drupal-net:
+        driver: bridge
+
+ 
+
+
